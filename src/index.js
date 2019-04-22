@@ -1,6 +1,8 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, globalShortcut } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
+import childProcess from 'child_process';
+import path from 'path';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -9,6 +11,14 @@ let mainWindow;
 const isDevMode = process.execPath.match(/[\\/]electron/);
 
 if (isDevMode) enableLiveReload({ strategy: 'react-hmr' });
+
+function takeScreenShot() {
+  const screenshotPath = path.join(app.getPath('temp'), `${Date.now()}.jpg`);
+  const process = childProcess.spawn(path.join(__dirname, 'bin', 'maim'), ['-s', screenshotPath]);
+  process.on('close', () => {
+    mainWindow.webContents.send('load-screenshot-preview', screenshotPath);
+  });
+}
 
 const createWindow = async () => {
   // Create the browser window.
@@ -33,6 +43,13 @@ const createWindow = async () => {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+
+  // Shortcuts
+  const takeScreenshotShortcut = globalShortcut.register('CommandOrControl+Alt+L', () => {
+    takeScreenShot();
+  });
+
+  if (!takeScreenshotShortcut) console.error('Take screeshot shortcut was not taken');
 };
 
 // This method will be called when Electron has finished
