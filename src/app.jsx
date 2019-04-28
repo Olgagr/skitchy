@@ -11,7 +11,9 @@ export default class App extends React.Component {
     this.canvas = null;
     this.inCropMode = false;
     this.croppingRect = null;
+    this.screenshotImage = null;
     this.loadImagePreview = this.loadImagePreview.bind(this);
+    this.drawCroppingArea = this.drawCroppingArea.bind(this);
     this.crop = this.crop.bind(this);
   }
 
@@ -24,16 +26,20 @@ export default class App extends React.Component {
   loadImagePreview(event, imagePath) {
     const canvasCenter = this.canvas.getCenter();
     fabric.Image.fromURL(imagePath, (i) => {
-      this.canvas.setBackgroundImage(i, this.canvas.renderAll.bind(this.canvas), {
+      this.screenshotImage = i;
+      this.screenshotImage.set({
         originX: 'center',
         originY: 'center',
         top: canvasCenter.top,
         left: canvasCenter.left,
+        selectable: false,
       });
+      this.canvas.add(this.screenshotImage);
+      this.canvas.renderAll();
     });
   }
 
-  crop() {
+  drawCroppingArea() {
     this.inCropMode = !this.inCropMode;
     if (this.inCropMode && !this.croppingRect) {
       let isDown;
@@ -77,15 +83,39 @@ export default class App extends React.Component {
         this.canvas.renderAll();
       };
 
-      this.canvas.on('mouse:down', onMouseDownHandler);
-
-      this.canvas.on('mouse:move', onMouseMoveHandler);
-
-      this.canvas.on('mouse:up', () => {
+      const mouseUpHandler = () => {
         isDown = false;
-        this.canvas.off({ 'mouse:down': onMouseDownHandler, 'mouse:move': onMouseMoveHandler });
-      });
+        this.canvas.off({
+          'mouse:down': onMouseDownHandler,
+          'mouse:move': onMouseMoveHandler,
+          'mouse:up': mouseUpHandler,
+        });
+        /*
+          Small trick to unblock dragging the rect. For some reason after drawing the rect,
+          it is blocked until scaled
+        */
+        this.croppingRect.scale(1);
+      };
+
+      this.canvas.on('mouse:down', onMouseDownHandler);
+      this.canvas.on('mouse:move', onMouseMoveHandler);
+      this.canvas.on('mouse:up', mouseUpHandler);
     }
+  }
+
+  crop() {
+    const left = this.croppingRect.left - this.screenshotImage.left;
+    const top = this.croppingRect.top - this.screenshotImage.top;
+    const width = this.croppingRect.width;
+    const height = this.croppingRect.height;
+
+    this.screenshotImage.clipTo = function clipTo(ctx) {
+      ctx.rect(left, top, width, height);
+    };
+    this.canvas.remove(this.croppingRect);
+    this.croppingRect = null;
+    this.inCropMode = false;
+    this.canvas.renderAll();
   }
 
   render() {
@@ -94,6 +124,9 @@ export default class App extends React.Component {
         <aside>
           <nav>
             <ul>
+              <li>
+                <button onClick={this.drawCroppingArea}>Draw cropping area</button>
+              </li>
               <li>
                 <button onClick={this.crop}>Crop</button>
               </li>
