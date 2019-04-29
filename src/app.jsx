@@ -6,12 +6,11 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      screenshotPath: null,
+      screenshotImage: null,
+      croppingRect: null,
     };
     this.canvas = null;
     this.inCropMode = false;
-    this.croppingRect = null;
-    this.screenshotImage = null;
     this.loadImagePreview = this.loadImagePreview.bind(this);
     this.drawCroppingArea = this.drawCroppingArea.bind(this);
     this.save = this.save.bind(this);
@@ -27,22 +26,22 @@ export default class App extends React.Component {
   loadImagePreview(event, imagePath) {
     const canvasCenter = this.canvas.getCenter();
     fabric.Image.fromURL(imagePath, (i) => {
-      this.screenshotImage = i;
-      this.screenshotImage.set({
+      this.setState({ screenshotImage: i });
+      this.state.screenshotImage.set({
         originX: 'center',
         originY: 'center',
         top: canvasCenter.top,
         left: canvasCenter.left,
         selectable: false,
       });
-      this.canvas.add(this.screenshotImage);
+      this.canvas.add(this.state.screenshotImage);
       this.canvas.renderAll();
     });
   }
 
   drawCroppingArea() {
     this.inCropMode = !this.inCropMode;
-    if (this.inCropMode && !this.croppingRect) {
+    if (this.inCropMode && !this.state.croppingRect) {
       let isDown;
       let origX;
       let origY;
@@ -53,7 +52,7 @@ export default class App extends React.Component {
         origX = pointer.x;
         origY = pointer.y;
         pointer = this.canvas.getPointer(o.e);
-        this.croppingRect = new fabric.Rect({
+        const rect = new fabric.Rect({
           left: origX,
           top: origY,
           originX: 'left',
@@ -64,7 +63,8 @@ export default class App extends React.Component {
           fill: 'rgba(255,0,0,0.5)',
           transparentCorners: false,
         });
-        this.canvas.add(this.croppingRect);
+        this.setState({ croppingRect: rect });
+        this.canvas.add(this.state.croppingRect);
       };
 
       const onMouseMoveHandler = (o) => {
@@ -72,14 +72,14 @@ export default class App extends React.Component {
         const pointer = this.canvas.getPointer(o.e);
 
         if (origX > pointer.x) {
-          this.croppingRect.set({ left: Math.abs(pointer.x) });
+          this.state.croppingRect.set({ left: Math.abs(pointer.x) });
         }
         if (origY > pointer.y) {
-          this.croppingRect.set({ top: Math.abs(pointer.y) });
+          this.state.croppingRect.set({ top: Math.abs(pointer.y) });
         }
 
-        this.croppingRect.set({ width: Math.abs(origX - pointer.x) });
-        this.croppingRect.set({ height: Math.abs(origY - pointer.y) });
+        this.state.croppingRect.set({ width: Math.abs(origX - pointer.x) });
+        this.state.croppingRect.set({ height: Math.abs(origY - pointer.y) });
 
         this.canvas.renderAll();
       };
@@ -95,7 +95,7 @@ export default class App extends React.Component {
           Small trick to unblock dragging the rect. For some reason after drawing the rect,
           it is blocked until scaled
         */
-        this.croppingRect.scale(1);
+        this.state.croppingRect.scale(1);
       };
 
       this.canvas.on('mouse:down', onMouseDownHandler);
@@ -105,16 +105,16 @@ export default class App extends React.Component {
   }
 
   crop() {
-    const left = this.croppingRect.left - this.screenshotImage.left;
-    const top = this.croppingRect.top - this.screenshotImage.top;
-    const width = this.croppingRect.width;
-    const height = this.croppingRect.height;
+    const left = this.state.croppingRect.left - this.state.screenshotImage.left;
+    const top = this.state.croppingRect.top - this.state.screenshotImage.top;
+    const width = this.state.croppingRect.width;
+    const height = this.state.croppingRect.height;
 
-    this.screenshotImage.clipTo = function clipTo(ctx) {
+    this.state.screenshotImage.clipTo = function clipTo(ctx) {
       ctx.rect(left, top, width, height);
     };
-    this.canvas.remove(this.croppingRect);
-    this.croppingRect = null;
+    this.canvas.remove(this.state.croppingRect);
+    this.setState({ croppingRect: null });
     this.inCropMode = false;
     this.canvas.renderAll();
   }
@@ -132,10 +132,17 @@ export default class App extends React.Component {
           <nav>
             <ul>
               <li>
-                <button onClick={this.drawCroppingArea}>Draw cropping area</button>
+                <button
+                  disabled={!this.state.screenshotImage || this.state.croppingRect}
+                  onClick={this.drawCroppingArea}
+                >
+                  Draw cropping area
+                </button>
               </li>
               <li>
-                <button onClick={this.crop}>Crop</button>
+                <button disabled={!this.state.croppingRect} onClick={this.crop}>
+                  Crop
+                </button>
               </li>
               <li>
                 <button onClick={this.save}>Save</button>
