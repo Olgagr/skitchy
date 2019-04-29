@@ -14,6 +14,7 @@ export default class App extends React.Component {
     this.screenshotImage = null;
     this.loadImagePreview = this.loadImagePreview.bind(this);
     this.drawCroppingArea = this.drawCroppingArea.bind(this);
+    this.save = this.save.bind(this);
     this.crop = this.crop.bind(this);
   }
 
@@ -118,6 +119,12 @@ export default class App extends React.Component {
     this.canvas.renderAll();
   }
 
+  save() {
+    const url = this.canvas.toDataURL({ format: 'png' });
+    const data = url.replace(/^data:image\/png;base64,/, '');
+    ipcRenderer.send('save-to-file', data);
+  }
+
   render() {
     return (
       <div className="content">
@@ -129,6 +136,9 @@ export default class App extends React.Component {
               </li>
               <li>
                 <button onClick={this.crop}>Crop</button>
+              </li>
+              <li>
+                <button onClick={this.save}>Save</button>
               </li>
             </ul>
           </nav>

@@ -1,8 +1,9 @@
-import { app, BrowserWindow, globalShortcut } from 'electron';
+import { app, BrowserWindow, globalShortcut, ipcMain, dialog } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
 import childProcess from 'child_process';
 import path from 'path';
+import fs from 'fs';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -50,6 +51,20 @@ const createWindow = async () => {
   });
 
   if (!takeScreenshotShortcut) console.error('Take screeshot shortcut was not taken');
+
+  ipcMain.on('save-to-file', (event, data) => {
+    const file = dialog.showSaveDialog({
+      title: 'Save image',
+      defaultPath: app.getPath('pictures'),
+      filters: [{ name: 'png files', extentions: ['png'] }],
+    });
+
+    if (!file) return;
+
+    fs.writeFile(file, data, 'base64', (err) => {
+      console.error(err);
+    });
+  });
 };
 
 // This method will be called when Electron has finished
