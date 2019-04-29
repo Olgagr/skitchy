@@ -1,6 +1,6 @@
 {
-  "name": "screen-shooter",
-  "productName": "screen-shooter",
+  "name": "skitchy",
+  "productName": "skitchy",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
