@@ -145,7 +145,9 @@ export default class App extends React.Component {
                 </button>
               </li>
               <li>
-                <button onClick={this.save}>Save</button>
+                <button onClick={this.save} disabled={!this.screenshotImage}>
+                  Save
+                </button>
               </li>
             </ul>
           </nav>
