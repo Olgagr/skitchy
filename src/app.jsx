@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import React from 'react';
 import { fabric } from 'fabric';
+import ColorPicker from './components/color-picker';
 
 export default class App extends React.Component {
   constructor() {
@@ -178,25 +179,7 @@ export default class App extends React.Component {
                 >
                   Color
                 </button>
-                <section>
-                  <ul>
-                    <li>
-                      <button data-color="#0ff" onClick={this.setActiveColor}>
-                        #0ff
-                      </button>
-                    </li>
-                    <li>
-                      <button data-color="#0000fe" onClick={this.setActiveColor}>
-                        #0000fe
-                      </button>
-                    </li>
-                    <li>
-                      <button data-color="#fc0000" onClick={this.setActiveColor}>
-                        #fc0000
-                      </button>
-                    </li>
-                  </ul>
-                </section>
+                <ColorPicker colorClickHandler={this.setActiveColor} />
               </li>
             </ul>
           </nav>
