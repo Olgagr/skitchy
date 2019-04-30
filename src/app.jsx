@@ -8,6 +8,8 @@ export default class App extends React.Component {
     this.state = {
       screenshotImage: null,
       croppingRect: null,
+      colorPickerOpened: false,
+      activeColor: '#0ff',
     };
     this.canvas = null;
     this.inCropMode = false;
@@ -15,12 +17,19 @@ export default class App extends React.Component {
     this.drawCroppingArea = this.drawCroppingArea.bind(this);
     this.save = this.save.bind(this);
     this.crop = this.crop.bind(this);
+    this.draw = this.draw.bind(this);
+    this.setActiveColor = this.setActiveColor.bind(this);
   }
 
   componentDidMount() {
     this.canvas = new fabric.Canvas('canvas');
     this.canvas.setDimensions({ width: 1080, height: 600 });
     ipcRenderer.on('load-screenshot-preview', this.loadImagePreview);
+  }
+
+  setActiveColor(event) {
+    if (!event.target.dataset && !event.target.dataset.color) return;
+    this.setState({ activeColor: event.target.dataset.color });
   }
 
   loadImagePreview(event, imagePath) {
@@ -40,6 +49,7 @@ export default class App extends React.Component {
   }
 
   drawCroppingArea() {
+    this.canvas.isDrawingMode = false;
     this.inCropMode = !this.inCropMode;
     if (this.inCropMode && !this.state.croppingRect) {
       let isDown;
@@ -125,6 +135,11 @@ export default class App extends React.Component {
     ipcRenderer.send('save-to-file', data);
   }
 
+  draw() {
+    this.canvas.freeDrawingBrush.color = this.state.activeColor;
+    this.canvas.isDrawingMode = true;
+  }
+
   render() {
     return (
       <div className="content">
@@ -145,9 +160,43 @@ export default class App extends React.Component {
                 </button>
               </li>
               <li>
-                <button onClick={this.save} disabled={!this.screenshotImage}>
+                <button onClick={this.save} disabled={!this.state.screenshotImage}>
                   Save
                 </button>
+              </li>
+              <li>
+                <button onClick={this.draw} disabled={!this.state.screenshotImage}>
+                  Draw
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() =>
+                    this.setState({ colorPickerOpened: !this.state.colorPickerOpened })
+                  }
+                  disabled={!this.state.screenshotImage}
+                >
+                  Color
+                </button>
+                <section>
+                  <ul>
+                    <li>
+                      <button data-color="#0ff" onClick={this.setActiveColor}>
+                        #0ff
+                      </button>
+                    </li>
+                    <li>
+                      <button data-color="#0000fe" onClick={this.setActiveColor}>
+                        #0000fe
+                      </button>
+                    </li>
+                    <li>
+                      <button data-color="#fc0000" onClick={this.setActiveColor}>
+                        #fc0000
+                      </button>
+                    </li>
+                  </ul>
+                </section>
               </li>
             </ul>
           </nav>
