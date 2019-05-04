@@ -179,7 +179,7 @@ export default class App extends React.Component {
                 >
                   Color
                 </button>
-                <ColorPicker colorClickHandler={this.setActiveColor} />
+                <ColorPicker colorChangeHandler={this.setActiveColor} />
               </li>
             </ul>
           </nav>
