@@ -1,25 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ColorPicker({ colorChangeHandler }) {
+function ColorPicker({ colorChangeHandler, activeColor }) {
+  const colors = ['#0ff', '#0000fe', '#ff0000'];
+
   return (
-    <section>
+    <section id="ColorPicker">
       <ul>
-        <li>
-          <button data-color="#0ff" onClick={colorChangeHandler}>
-            #0ff
-          </button>
-        </li>
-        <li>
-          <button data-color="#0000fe" onClick={colorChangeHandler}>
-            #0000fe
-          </button>
-        </li>
-        <li>
-          <button data-color="#fc0000" onClick={colorChangeHandler}>
-            #fc0000
-          </button>
-        </li>
+        {colors.map((color) => (
+          <li key={color}>
+            <button
+              style={{ background: color }}
+              className={activeColor === color ? 'color-preview selected' : 'color-preview'}
+              data-color={color}
+              onClick={colorChangeHandler}
+            />
+          </li>
+        ))}
       </ul>
     </section>
   );
@@ -27,6 +24,7 @@ function ColorPicker({ colorChangeHandler }) {
 
 ColorPicker.propTypes = {
   colorChangeHandler: PropTypes.func.isRequired,
+  activeColor: PropTypes.string.isRequired,
 };
 
 export default ColorPicker;

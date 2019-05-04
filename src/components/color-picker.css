@@ -1,0 +1,23 @@
+#ColorPicker .color-preview {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 50%;
+  outline: none;
+}
+
+#ColorPicker .color-preview.selected {
+  border: 4px solid antiquewhite;
+}
+
+#ColorPicker ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#ColorPicker li {
+  display: flex;
+  align-items: center;
+  height: 30px;
+}

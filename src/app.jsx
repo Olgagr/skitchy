@@ -10,7 +10,7 @@ export default class App extends React.Component {
       screenshotImage: null,
       croppingRect: null,
       colorPickerOpened: false,
-      activeColor: '#0ff',
+      activeColor: '#ff0000',
     };
     this.canvas = null;
     this.inCropMode = false;
@@ -30,7 +30,11 @@ export default class App extends React.Component {
 
   setActiveColor(event) {
     if (!event.target.dataset && !event.target.dataset.color) return;
-    this.setState({ activeColor: event.target.dataset.color });
+    this.setState({ activeColor: event.target.dataset.color }, () => {
+      if (this.canvas.isDrawingMode) {
+        this.canvas.freeDrawingBrush.color = this.state.activeColor;
+      }
+    });
   }
 
   loadImagePreview(event, imagePath) {
@@ -179,7 +183,10 @@ export default class App extends React.Component {
                 >
                   Color
                 </button>
-                <ColorPicker colorChangeHandler={this.setActiveColor} />
+                <ColorPicker
+                  colorChangeHandler={this.setActiveColor}
+                  activeColor={this.state.activeColor}
+                />
               </li>
             </ul>
           </nav>
