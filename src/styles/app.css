@@ -1,11 +1,20 @@
 @import url('./../components/color-picker.css');
 
+.m-hidden {
+  display: none;
+}
+
 #App {
-  height: calc(100vh - 40px);
-  width: calc(100vw - 40px);
-  padding: 20px;
-  background: #000;
+  height: 100vh;
+  width: 100vw;
+  background: #171717;
   color: #ababab;
+}
+
+#App ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 #App .content {
@@ -19,7 +28,27 @@
 }
 
 #App aside {
-  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 100vh;
+  background: #252525;
+}
+
+#App nav li {
+  padding-bottom: 15px;
+}
+
+#App nav .action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+#App nav .action-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 #App main {
@@ -28,4 +57,31 @@
   justify-content: center;
   flex: 1;
   height: 100%;
+}
+
+.action-icon {
+  width: 32px;
+  height: 32px;
+  fill: #05b4f5;
+}
+
+.action-icon__small {
+  width: 22px;
+  height: 22px;
+}
+
+#App .b-cropping-action {
+  position: relative;
+}
+
+#App .b-cropping-action ul {
+  position: absolute;
+  left: 52px;
+  top: -4px;
+  background: #252525;
+  padding: 5px;
+}
+
+#App .b-cropping-action ul li:last-child {
+  padding-bottom: 0;
 }

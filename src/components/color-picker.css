@@ -10,14 +10,8 @@
   border: 4px solid antiquewhite;
 }
 
-#ColorPicker ul {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
 #ColorPicker li {
   display: flex;
   align-items: center;
-  height: 30px;
+  justify-content: center;
 }
