@@ -1,4 +1,5 @@
 @import url('./../components/color-picker.css');
+@import url('./../components//toolbox.css');
 
 .m-hidden {
   display: none;
@@ -28,27 +29,14 @@
 }
 
 #App aside {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 60px;
   height: 100vh;
   background: #252525;
-}
-
-#App nav li {
-  padding-bottom: 15px;
-}
-
-#App nav .action-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-#App nav .action-btn[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
+  z-index: 1;
 }
 
 #App main {
@@ -57,31 +45,4 @@
   justify-content: center;
   flex: 1;
   height: 100%;
-}
-
-.action-icon {
-  width: 32px;
-  height: 32px;
-  fill: #05b4f5;
-}
-
-.action-icon__small {
-  width: 22px;
-  height: 22px;
-}
-
-#App .b-cropping-action {
-  position: relative;
-}
-
-#App .b-cropping-action ul {
-  position: absolute;
-  left: 52px;
-  top: -4px;
-  background: #252525;
-  padding: 5px;
-}
-
-#App .b-cropping-action ul li:last-child {
-  padding-bottom: 0;
 }
