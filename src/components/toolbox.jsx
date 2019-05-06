@@ -5,7 +5,7 @@ import ColorPicker from './color-picker';
 
 function Toolbox(props) {
   return (
-    <ul id="Toolbox">
+    <ul>
       <li>
         <button className="action-btn" onClick={props.save} disabled={!props.screenshotImage}>
           <svg className="action-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
