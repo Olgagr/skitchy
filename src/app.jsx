@@ -20,6 +20,7 @@ export default class App extends React.Component {
     this.save = this.save.bind(this);
     this.crop = this.crop.bind(this);
     this.draw = this.draw.bind(this);
+    this.addText = this.addText.bind(this);
     this.setActiveColor = this.setActiveColor.bind(this);
     this.setCanvasSize = this.setCanvasSize.bind(this);
   }
@@ -159,6 +160,18 @@ export default class App extends React.Component {
     this.canvas.isDrawingMode = true;
   }
 
+  addText() {
+    const canvasCenter = this.canvas.getCenter();
+    const text = new fabric.IText('Type some text here', {
+      originX: 'center',
+      originY: 'center',
+      top: canvasCenter.top,
+      left: canvasCenter.left,
+      fill: this.state.activeColor,
+    });
+    this.canvas.add(text);
+  }
+
   render() {
     return (
       <div className="content">
@@ -170,6 +183,7 @@ export default class App extends React.Component {
                 save={this.save}
                 crop={this.crop}
                 draw={this.draw}
+                addText={this.addText}
                 setActiveColor={this.setActiveColor}
                 drawCroppingArea={this.drawCroppingArea}
               />
