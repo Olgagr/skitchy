@@ -42,6 +42,11 @@ export default class App extends React.Component {
       if (this.canvas.isDrawingMode) {
         this.canvas.freeDrawingBrush.color = this.state.activeColor;
       }
+      this.canvas.getActiveObjects().forEach((object) => {
+        if (object instanceof fabric.IText) object.set('fill', this.state.activeColor);
+        if (object instanceof fabric.Path) object.set('stroke', this.state.activeColor);
+      });
+      this.canvas.renderAll();
     });
   }
 
@@ -161,6 +166,7 @@ export default class App extends React.Component {
   }
 
   addText() {
+    this.canvas.isDrawingMode = false;
     const canvasCenter = this.canvas.getCenter();
     const text = new fabric.IText('Type some text here', {
       originX: 'center',
