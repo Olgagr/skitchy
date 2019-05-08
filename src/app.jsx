@@ -20,6 +20,7 @@ export default class App extends React.Component {
     this.save = this.save.bind(this);
     this.crop = this.crop.bind(this);
     this.draw = this.draw.bind(this);
+    this.select = this.select.bind(this);
     this.addText = this.addText.bind(this);
     this.setActiveColor = this.setActiveColor.bind(this);
     this.setCanvasSize = this.setCanvasSize.bind(this);
@@ -60,14 +61,15 @@ export default class App extends React.Component {
   loadImagePreview(event, imagePath) {
     const canvasCenter = this.canvas.getCenter();
     fabric.Image.fromURL(imagePath, (i) => {
-      this.setState({ screenshotImage: i });
-      this.state.screenshotImage.set({
+      i.set({
         originX: 'center',
         originY: 'center',
         top: canvasCenter.top,
         left: canvasCenter.left,
         selectable: false,
+        hoverCursor: 'auto',
       });
+      this.setState({ screenshotImage: i });
       this.canvas.add(this.state.screenshotImage);
       this.canvas.renderAll();
     });
@@ -139,6 +141,11 @@ export default class App extends React.Component {
     }
   }
 
+  select() {
+    this.canvas.isDrawingMode = false;
+    this.canvas.setCursor('pointer');
+  }
+
   crop() {
     const left = this.state.croppingRect.left - this.state.screenshotImage.left;
     const top = this.state.croppingRect.top - this.state.screenshotImage.top;
@@ -190,6 +197,7 @@ export default class App extends React.Component {
                 crop={this.crop}
                 draw={this.draw}
                 addText={this.addText}
+                select={this.select}
                 setActiveColor={this.setActiveColor}
                 drawCroppingArea={this.drawCroppingArea}
               />
