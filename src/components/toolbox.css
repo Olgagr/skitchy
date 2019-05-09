@@ -24,11 +24,11 @@
   height: 22px;
 }
 
-#Toolbox .b-cropping-action {
+#Toolbox .b-with-submenu {
   position: relative;
 }
 
-#Toolbox .b-cropping-action ul {
+#Toolbox .b-with-submenu ul {
   position: absolute;
   left: 52px;
   top: -4px;
@@ -36,6 +36,6 @@
   padding: 5px;
 }
 
-#Toolbox .b-cropping-action ul li:last-child {
+#Toolbox .b-with-submenu ul li:last-child {
   padding-bottom: 0;
 }

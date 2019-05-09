@@ -24,6 +24,7 @@ export default class App extends React.Component {
     this.addText = this.addText.bind(this);
     this.setActiveColor = this.setActiveColor.bind(this);
     this.setCanvasSize = this.setCanvasSize.bind(this);
+    this.addShape = this.addShape.bind(this);
   }
 
   componentDidMount() {
@@ -45,7 +46,13 @@ export default class App extends React.Component {
       }
       this.canvas.getActiveObjects().forEach((object) => {
         if (object instanceof fabric.IText) object.set('fill', this.state.activeColor);
-        if (object instanceof fabric.Path) object.set('stroke', this.state.activeColor);
+        if (object instanceof fabric.Path) {
+          if (object.fill) {
+            object.set('fill', this.state.activeColor);
+          } else {
+            object.set('stroke', this.state.activeColor);
+          }
+        }
       });
       this.canvas.renderAll();
     });
@@ -185,6 +192,29 @@ export default class App extends React.Component {
     this.canvas.add(text);
   }
 
+  addShape(shapeType) {
+    const canvasCenter = this.canvas.getCenter();
+    switch (shapeType) {
+      case 'arrow':
+      default:
+        fabric.loadSVGFromString(
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"/></svg>',
+          ([path]) => {
+            path.set({
+              fill: this.state.activeColor,
+              scaleX: 0.2,
+              scaleY: 0.2,
+              originX: 'center',
+              originY: 'center',
+              top: canvasCenter.top,
+              left: canvasCenter.left,
+            });
+            this.canvas.add(path);
+          }
+        );
+    }
+  }
+
   render() {
     return (
       <div className="content">
@@ -200,6 +230,7 @@ export default class App extends React.Component {
                 select={this.select}
                 setActiveColor={this.setActiveColor}
                 drawCroppingArea={this.drawCroppingArea}
+                addShape={this.addShape}
               />
             </ul>
           </nav>
