@@ -47,7 +47,7 @@ const createWindow = async () => {
   });
 
   // Shortcuts
-  const takeScreenshotShortcut = globalShortcut.register('CommandOrControl+Alt+L', () => {
+  const takeScreenshotShortcut = globalShortcut.register('CommandOrControl+Shift+L', () => {
     takeScreenShot();
   });
 
