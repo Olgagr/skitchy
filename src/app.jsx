@@ -27,6 +27,7 @@ export default class App extends React.Component {
     this.setCanvasSize = this.setCanvasSize.bind(this);
     this.addShape = this.addShape.bind(this);
     this.deleteActiveObjects = this.deleteActiveObjects.bind(this);
+    this.deleteCroppingArea = this.deleteCroppingArea.bind(this);
   }
 
   componentDidMount() {
@@ -171,10 +172,7 @@ export default class App extends React.Component {
     this.state.screenshotImage.clipTo = function clipTo(ctx) {
       ctx.rect(left, top, width, height);
     };
-    this.canvas.remove(this.state.croppingRect);
-    this.setState({ croppingRect: null });
-    this.inCropMode = false;
-    this.canvas.renderAll();
+    this.deleteCroppingArea();
   }
 
   save() {
@@ -224,6 +222,13 @@ export default class App extends React.Component {
     }
   }
 
+  deleteCroppingArea() {
+    this.canvas.remove(this.state.croppingRect);
+    this.setState({ croppingRect: null });
+    this.inCropMode = false;
+    this.canvas.renderAll();
+  }
+
   render() {
     return (
       <div className="content">
@@ -240,6 +245,7 @@ export default class App extends React.Component {
                 setActiveColor={this.setActiveColor}
                 drawCroppingArea={this.drawCroppingArea}
                 addShape={this.addShape}
+                deleteCroppingArea={this.deleteCroppingArea}
               />
             </ul>
           </nav>
