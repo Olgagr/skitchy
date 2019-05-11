@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron';
 import React from 'react';
 import { fabric } from 'fabric';
 import Toolbox from './components/toolbox';
+import { APP_EVENTS } from './constants';
 
 export default class App extends React.Component {
   constructor() {
@@ -25,17 +26,20 @@ export default class App extends React.Component {
     this.setActiveColor = this.setActiveColor.bind(this);
     this.setCanvasSize = this.setCanvasSize.bind(this);
     this.addShape = this.addShape.bind(this);
+    this.deleteActiveObjects = this.deleteActiveObjects.bind(this);
   }
 
   componentDidMount() {
     this.canvas = new fabric.Canvas('canvas');
     this.setCanvasSize();
-    ipcRenderer.on('load-screenshot-preview', this.loadImagePreview);
+    ipcRenderer.on(APP_EVENTS.LOAD_SCREENSHOT_PREVIEW, this.loadImagePreview);
+    ipcRenderer.on(APP_EVENTS.DELETE_BUTTON_PRESSED, this.deleteActiveObjects);
     window.addEventListener('resize', this.setCanvasSize, false);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.setCanvasSize);
+    this.canvas.dispose();
   }
 
   setActiveColor(event) {
@@ -63,6 +67,11 @@ export default class App extends React.Component {
     const { width, height } = mainEl.getBoundingClientRect();
     this.canvas.setDimensions({ width, height });
     this.canvas.renderAll();
+  }
+
+  deleteActiveObjects() {
+    this.canvas.getActiveObjects().forEach((obj) => this.canvas.remove(obj));
+    this.canvas.discardActiveObject().requestRenderAll();
   }
 
   loadImagePreview(event, imagePath) {

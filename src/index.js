@@ -4,6 +4,7 @@ import { enableLiveReload } from 'electron-compile';
 import childProcess from 'child_process';
 import path from 'path';
 import fs from 'fs';
+import { APP_EVENTS } from './constants';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -17,7 +18,7 @@ function takeScreenShot() {
   const screenshotPath = path.join(app.getPath('temp'), `${Date.now()}.jpg`);
   const process = childProcess.spawn(path.join(__dirname, 'bin', 'maim'), ['-s', screenshotPath]);
   process.on('close', () => {
-    mainWindow.webContents.send('load-screenshot-preview', screenshotPath);
+    mainWindow.webContents.send(APP_EVENTS.LOAD_SCREENSHOT_PREVIEW, screenshotPath);
   });
 }
 
@@ -50,8 +51,15 @@ const createWindow = async () => {
     takeScreenShot();
   });
 
-  if (!takeScreenshotShortcut) console.error('Take screeshot shortcut was not taken');
+  if (!takeScreenshotShortcut) console.error('Take screeshot shortcut was not registred');
 
+  const deleteBtnShortcut = globalShortcut.register('Delete', () =>
+    mainWindow.webContents.send(APP_EVENTS.DELETE_BUTTON_PRESSED)
+  );
+
+  if (!deleteBtnShortcut) console.error('Delete button shortcut was not registered');
+
+  // events
   ipcMain.on('save-to-file', (event, data) => {
     const file = dialog.showSaveDialog({
       title: 'Save image',
