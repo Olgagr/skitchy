@@ -9,9 +9,9 @@ import ToolboxTextOption from './toolbox-options/ToolboxTextOption';
 import ToolboxDrawOption from './toolbox-options/ToolboxDrawOption';
 import ToolboxShapeOption from './toolbox-options/ToolboxShapeOption';
 
-class Toolbox extends Component {
-  constructor() {
-    super();
+export default class Toolbox extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
       activeColor: '#ff0000',
     };
@@ -95,5 +95,3 @@ Toolbox.defaultProps = {
   screenshotImage: null,
   canvas: null,
 };
-
-export default Toolbox;
