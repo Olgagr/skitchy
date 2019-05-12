@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 export default class ToolboxCropOption extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       croppingRect: null,
     };
