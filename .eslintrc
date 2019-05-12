@@ -12,7 +12,9 @@
     "react/prefer-stateless-function": 0,
     "new-cap": "warn",
     "no-useless-return": "off",
-    "arrow-parens": "off"
+    "arrow-parens": "off",
+    "no-param-reassign": "warn",
+    "max-len": "off"
   },
   "globals": {
     "fabric": true
