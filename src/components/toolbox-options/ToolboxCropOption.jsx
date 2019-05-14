@@ -13,6 +13,16 @@ export default class ToolboxCropOption extends Component {
     this.deleteCroppingArea = this.deleteCroppingArea.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.activeOption !== TOOLBOX_OPTION.CROP &&
+      prevProps.activeOption === TOOLBOX_OPTION.CROP
+    ) {
+      this.deleteCroppingArea();
+      this.props.canvas.trigger('mouse:up');
+    }
+  }
+
   drawCroppingArea() {
     this.props.optionClickHandler(TOOLBOX_OPTION.CROP);
 
@@ -70,7 +80,9 @@ export default class ToolboxCropOption extends Component {
           Small trick to unblock dragging the rect. For some reason after drawing the rect,
           it is blocked until scaled
         */
-        this.state.croppingRect.scale(1);
+        if (this.state.croppingRect) {
+          this.state.croppingRect.scale(1);
+        }
       };
 
       this.props.canvas.on('mouse:down', onMouseDownHandler);
@@ -102,7 +114,7 @@ export default class ToolboxCropOption extends Component {
       <div>
         <button
           className="action-btn"
-          disabled={this.props.disabled || this.state.croppingRect}
+          disabled={!this.props.screenshotImage || this.state.croppingRect}
           onClick={this.drawCroppingArea}
         >
           <svg
@@ -142,14 +154,14 @@ export default class ToolboxCropOption extends Component {
 ToolboxCropOption.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   canvas: PropTypes.object,
-  disabled: PropTypes.bool,
   // eslint-disable-next-line react/forbid-prop-types
   screenshotImage: PropTypes.object,
   optionClickHandler: PropTypes.func.isRequired,
+  activeOption: PropTypes.string,
 };
 
 ToolboxCropOption.defaultProps = {
   canvas: null,
-  disabled: true,
   screenshotImage: null,
+  activeOption: null,
 };

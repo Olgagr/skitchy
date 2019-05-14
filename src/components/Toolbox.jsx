@@ -49,47 +49,43 @@ export default class Toolbox extends Component {
       <ul id="Toolbox">
         <li>
           <ToolboxSaveOption
-            canvas={this.props.canvas}
-            disabled={!this.props.screenshotImage}
+            {...this.props}
+            {...this.state}
             optionClickHandler={this.optionClickHandler}
           />
         </li>
-        <li className="b-cropping-action">
+        <li>
           <ToolboxSelectOption
-            canvas={this.props.canvas}
-            disabled={!this.props.screenshotImage}
+            {...this.props}
+            {...this.state}
             optionClickHandler={this.optionClickHandler}
           />
         </li>
         <li className="b-with-submenu">
           <ToolboxCropOption
-            canvas={this.props.canvas}
-            disabled={!this.props.screenshotImage}
-            screenshotImage={this.props.screenshotImage}
+            {...this.props}
+            {...this.state}
             optionClickHandler={this.optionClickHandler}
           />
         </li>
         <li>
           <ToolboxTextOption
-            canvas={this.props.canvas}
-            disabled={!this.props.screenshotImage}
-            activeColor={this.state.activeColor}
+            {...this.props}
+            {...this.state}
             optionClickHandler={this.optionClickHandler}
           />
         </li>
         <li>
           <ToolboxDrawOption
-            canvas={this.props.canvas}
-            disabled={!this.props.screenshotImage}
-            activeColor={this.state.activeColor}
+            {...this.props}
+            {...this.state}
             optionClickHandler={this.optionClickHandler}
           />
         </li>
         <li className="b-with-submenu">
           <ToolboxShapeOption
-            canvas={this.props.canvas}
-            disabled={!this.props.screenshotImage}
-            activeColor={this.state.activeColor}
+            {...this.props}
+            {...this.state}
             optionClickHandler={this.optionClickHandler}
           />
         </li>

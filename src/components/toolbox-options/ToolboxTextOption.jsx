@@ -2,11 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TOOLBOX_OPTION } from '../../constants';
 
-export default function ToolboxTextOption({ canvas, disabled, activeColor, optionClickHandler }) {
+export default function ToolboxTextOption({
+  canvas,
+  screenshotImage,
+  activeColor,
+  optionClickHandler,
+}) {
   return (
     <button
       className="action-btn"
-      disabled={disabled}
+      disabled={!screenshotImage}
       onClick={() => {
         optionClickHandler(TOOLBOX_OPTION.ADD_TEXT);
         const canvasCenter = canvas.getCenter();
@@ -30,12 +35,14 @@ export default function ToolboxTextOption({ canvas, disabled, activeColor, optio
 ToolboxTextOption.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   canvas: PropTypes.object,
-  disabled: PropTypes.bool,
+  // eslint-disable-next-line react/forbid-prop-types
+  screenshotImage: PropTypes.object,
   activeColor: PropTypes.string.isRequired,
   optionClickHandler: PropTypes.func.isRequired,
 };
 
 ToolboxTextOption.defaultProps = {
   canvas: null,
+  screenshotImage: null,
   disabled: true,
 };

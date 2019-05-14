@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TOOLBOX_OPTION } from '../../constants';
 
-export default function ToolboxSelectOption({ canvas, disabled, optionClickHandler }) {
+export default function ToolboxSelectOption({ canvas, screenshotImage, optionClickHandler }) {
   return (
     <button
       className="action-btn"
-      disabled={disabled}
+      disabled={!screenshotImage}
       onClick={() => {
         optionClickHandler(TOOLBOX_OPTION.SELECT);
         canvas.setCursor('pointer');
@@ -22,11 +22,13 @@ export default function ToolboxSelectOption({ canvas, disabled, optionClickHandl
 ToolboxSelectOption.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   canvas: PropTypes.object,
-  disabled: PropTypes.bool,
+  // eslint-disable-next-line react/forbid-prop-types
+  screenshotImage: PropTypes.object,
   optionClickHandler: PropTypes.func.isRequired,
 };
 
 ToolboxSelectOption.defaultProps = {
   canvas: null,
+  screenshotImage: null,
   disabled: true,
 };
