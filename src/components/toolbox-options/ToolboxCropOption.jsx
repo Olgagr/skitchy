@@ -31,6 +31,8 @@ export default class ToolboxCropOption extends Component {
       let origX;
       let origY;
 
+      this.toggleObjectSelectionOnCanvas(false);
+
       const onMouseDownHandler = (o) => {
         isDown = true;
         let pointer = this.props.canvas.getPointer(o.e);
@@ -104,9 +106,19 @@ export default class ToolboxCropOption extends Component {
   }
 
   deleteCroppingArea() {
+    this.toggleObjectSelectionOnCanvas(true);
     this.props.canvas.remove(this.state.croppingRect);
     this.setState({ croppingRect: null });
     this.props.canvas.renderAll();
+  }
+
+  toggleObjectSelectionOnCanvas(isSelectable) {
+    this.props.canvas
+      .getObjects()
+      .filter((item) => !(item instanceof fabric.Image))
+      .forEach((item) => {
+        item.set({ selectable: isSelectable });
+      });
   }
 
   render() {
