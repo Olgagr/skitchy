@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { TOOLBOX_OPTION } from '../../constants';
 
-export default function ToolboxTextOption({ canvas, disabled, activeColor }) {
+export default function ToolboxTextOption({ canvas, disabled, activeColor, optionClickHandler }) {
   return (
     <button
       className="action-btn"
       disabled={disabled}
       onClick={() => {
-        canvas.isDrawingMode = false;
+        optionClickHandler(TOOLBOX_OPTION.ADD_TEXT);
         const canvasCenter = canvas.getCenter();
         const text = new fabric.IText('Type some text here', {
           originX: 'center',
@@ -31,6 +32,7 @@ ToolboxTextOption.propTypes = {
   canvas: PropTypes.object,
   disabled: PropTypes.bool,
   activeColor: PropTypes.string.isRequired,
+  optionClickHandler: PropTypes.func.isRequired,
 };
 
 ToolboxTextOption.defaultProps = {

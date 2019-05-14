@@ -8,14 +8,17 @@ import ToolboxCropOption from './toolbox-options/ToolboxCropOption';
 import ToolboxTextOption from './toolbox-options/ToolboxTextOption';
 import ToolboxDrawOption from './toolbox-options/ToolboxDrawOption';
 import ToolboxShapeOption from './toolbox-options/ToolboxShapeOption';
+import { TOOLBOX_OPTION } from '../constants';
 
 export default class Toolbox extends Component {
   constructor(props) {
     super(props);
     this.state = {
       activeColor: '#ff0000',
+      activeOption: null,
     };
     this.setActiveColor = this.setActiveColor.bind(this);
+    this.optionClickHandler = this.optionClickHandler.bind(this);
   }
 
   setActiveColor(event) {
@@ -36,20 +39,34 @@ export default class Toolbox extends Component {
     });
   }
 
+  optionClickHandler(optionName) {
+    this.setState({ activeOption: optionName });
+    this.props.canvas.isDrawingMode = optionName === TOOLBOX_OPTION.DRAW;
+  }
+
   render() {
     return (
       <ul id="Toolbox">
         <li>
-          <ToolboxSaveOption canvas={this.props.canvas} disabled={!this.props.screenshotImage} />
+          <ToolboxSaveOption
+            canvas={this.props.canvas}
+            disabled={!this.props.screenshotImage}
+            optionClickHandler={this.optionClickHandler}
+          />
         </li>
         <li className="b-cropping-action">
-          <ToolboxSelectOption canvas={this.props.canvas} disabled={!this.props.screenshotImage} />
+          <ToolboxSelectOption
+            canvas={this.props.canvas}
+            disabled={!this.props.screenshotImage}
+            optionClickHandler={this.optionClickHandler}
+          />
         </li>
         <li className="b-with-submenu">
           <ToolboxCropOption
             canvas={this.props.canvas}
             disabled={!this.props.screenshotImage}
             screenshotImage={this.props.screenshotImage}
+            optionClickHandler={this.optionClickHandler}
           />
         </li>
         <li>
@@ -57,6 +74,7 @@ export default class Toolbox extends Component {
             canvas={this.props.canvas}
             disabled={!this.props.screenshotImage}
             activeColor={this.state.activeColor}
+            optionClickHandler={this.optionClickHandler}
           />
         </li>
         <li>
@@ -64,6 +82,7 @@ export default class Toolbox extends Component {
             canvas={this.props.canvas}
             disabled={!this.props.screenshotImage}
             activeColor={this.state.activeColor}
+            optionClickHandler={this.optionClickHandler}
           />
         </li>
         <li className="b-with-submenu">
@@ -71,6 +90,7 @@ export default class Toolbox extends Component {
             canvas={this.props.canvas}
             disabled={!this.props.screenshotImage}
             activeColor={this.state.activeColor}
+            optionClickHandler={this.optionClickHandler}
           />
         </li>
         <li className={this.props.screenshotImage ? '' : 'm-hidden'}>

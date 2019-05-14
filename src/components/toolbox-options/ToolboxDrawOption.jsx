@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { TOOLBOX_OPTION } from '../../constants';
 
-export default function ToolboxDrawOption({ canvas, disabled, activeColor }) {
+export default function ToolboxDrawOption({ canvas, disabled, activeColor, optionClickHandler }) {
   return (
     <button
       className="action-btn"
       onClick={() => {
+        optionClickHandler(TOOLBOX_OPTION.DRAW);
         canvas.freeDrawingBrush.color = activeColor;
         canvas.isDrawingMode = true;
       }}
@@ -23,6 +25,7 @@ ToolboxDrawOption.propTypes = {
   canvas: PropTypes.object,
   disabled: PropTypes.bool,
   activeColor: PropTypes.string.isRequired,
+  optionClickHandler: PropTypes.func.isRequired,
 };
 
 ToolboxDrawOption.defaultProps = {

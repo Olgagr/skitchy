@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { TOOLBOX_OPTION } from '../../constants';
 
 const SHAPE_TYPES = {
   ARROW: 'arrow',
@@ -7,7 +8,6 @@ const SHAPE_TYPES = {
 
 export default class ToolboxShapeOption extends Component {
   addShape(shapeType) {
-    this.props.canvas.isDrawingMode = false;
     const canvasCenter = this.props.canvas.getCenter();
     switch (shapeType) {
       case SHAPE_TYPES.ARROW:
@@ -36,7 +36,10 @@ export default class ToolboxShapeOption extends Component {
       <div>
         <button
           className="action-btn"
-          onClick={() => this.addShape(SHAPE_TYPES.ARROW)}
+          onClick={() => {
+            this.addShape(SHAPE_TYPES.ARROW);
+            this.props.optionClickHandler(TOOLBOX_OPTION.ADD_SHAPE);
+          }}
           disabled={this.props.disabled}
         >
           <svg className="action-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -62,6 +65,7 @@ ToolboxShapeOption.propTypes = {
   canvas: PropTypes.object,
   disabled: PropTypes.bool,
   activeColor: PropTypes.string.isRequired,
+  optionClickHandler: PropTypes.func.isRequired,
 };
 
 ToolboxShapeOption.defaultProps = {

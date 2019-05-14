@@ -1,8 +1,9 @@
 import { ipcRenderer } from 'electron';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { TOOLBOX_OPTION } from '../../constants';
 
-export default function ToolboxSaveOption({ canvas, disabled }) {
+export default function ToolboxSaveOption({ canvas, disabled, optionClickHandler }) {
   return (
     <button
       className="action-btn"
@@ -10,6 +11,7 @@ export default function ToolboxSaveOption({ canvas, disabled }) {
         const url = canvas.toDataURL({ format: 'png' });
         const data = url.replace(/^data:image\/png;base64,/, '');
         ipcRenderer.send('save-to-file', data);
+        optionClickHandler(TOOLBOX_OPTION.SAVE);
       }}
       disabled={disabled}
     >
@@ -24,6 +26,7 @@ ToolboxSaveOption.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   canvas: PropTypes.object,
   disabled: PropTypes.bool,
+  optionClickHandler: PropTypes.func.isRequired,
 };
 
 ToolboxSaveOption.defaultProps = {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { TOOLBOX_OPTION } from '../../constants';
 
 export default class ToolboxCropOption extends Component {
   constructor(props) {
@@ -13,7 +14,8 @@ export default class ToolboxCropOption extends Component {
   }
 
   drawCroppingArea() {
-    this.props.canvas.isDrawingMode = false;
+    this.props.optionClickHandler(TOOLBOX_OPTION.CROP);
+
     if (!this.state.croppingRect) {
       let isDown;
       let origX;
@@ -143,6 +145,7 @@ ToolboxCropOption.propTypes = {
   disabled: PropTypes.bool,
   // eslint-disable-next-line react/forbid-prop-types
   screenshotImage: PropTypes.object,
+  optionClickHandler: PropTypes.func.isRequired,
 };
 
 ToolboxCropOption.defaultProps = {
