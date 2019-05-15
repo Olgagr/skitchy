@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TOOLBOX_OPTION } from '../../constants';
+import { TOOLBOX_OPTION, APP_EVENTS } from '../../constants';
 
 export default function ToolboxSaveOption({ canvas, screenshotImage, optionClickHandler }) {
   return (
@@ -10,7 +10,7 @@ export default function ToolboxSaveOption({ canvas, screenshotImage, optionClick
       onClick={() => {
         const url = canvas.toDataURL({ format: 'png' });
         const data = url.replace(/^data:image\/png;base64,/, '');
-        ipcRenderer.send('save-to-file', data);
+        ipcRenderer.send(APP_EVENTS.SAVE_TO_FILE, data);
         optionClickHandler(TOOLBOX_OPTION.SAVE);
       }}
       disabled={!screenshotImage}

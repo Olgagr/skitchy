@@ -71,7 +71,7 @@ const createMainWindow = async () => {
   if (!deleteBtnShortcut) console.error('Delete button shortcut was not registered');
 
   // events
-  ipcMain.on('save-to-file', (event, data) => {
+  ipcMain.on(APP_EVENTS.SAVE_TO_FILE, (event, data) => {
     const file = dialog.showSaveDialog({
       title: 'Save image',
       defaultPath: app.getPath('pictures'),
