@@ -42,6 +42,7 @@ export default class App extends React.Component {
 
   loadImagePreview(event, imagePath) {
     const canvasCenter = this.state.canvas.getCenter();
+    this.state.canvas.clear();
     fabric.Image.fromURL(imagePath, (i) => {
       i.set({
         originX: 'center',
@@ -54,6 +55,7 @@ export default class App extends React.Component {
       this.setState({ screenshotImage: i });
       this.state.canvas.add(this.state.screenshotImage);
       this.state.canvas.renderAll();
+      ipcRenderer.send(APP_EVENTS.SCREENSHOT_LOADED);
     });
   }
 

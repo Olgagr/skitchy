@@ -1,6 +1,7 @@
 export const APP_EVENTS = {
   LOAD_SCREENSHOT_PREVIEW: 'load-screenshot-preview',
   DELETE_BUTTON_PRESSED: 'delete-button-pressed',
+  SCREENSHOT_LOADED: 'screenshot-loaded',
 };
 
 export const TOOLBOX_OPTION = {

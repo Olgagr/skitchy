@@ -9,12 +9,13 @@ import { APP_EVENTS } from './constants';
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let screenshotLoaded = false;
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
 
 if (isDevMode) enableLiveReload({ strategy: 'react-hmr' });
 
-function takeScreenShot() {
+function takeScreenshot() {
   const screenshotPath = path.join(app.getPath('temp'), `${Date.now()}.jpg`);
   const process = childProcess.spawn(path.join(__dirname, 'bin', 'maim'), ['-s', screenshotPath]);
   process.on('close', () => {
@@ -22,7 +23,7 @@ function takeScreenShot() {
   });
 }
 
-const createWindow = async () => {
+const createMainWindow = async () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
@@ -48,7 +49,17 @@ const createWindow = async () => {
 
   // Shortcuts
   const takeScreenshotShortcut = globalShortcut.register('CommandOrControl+Shift+L', () => {
-    takeScreenShot();
+    if (screenshotLoaded) {
+      const response = dialog.showMessageBox({
+        type: 'question',
+        title: 'Warning',
+        buttons: ['Cancel', 'Yes'],
+        message: 'Are you sure you want to load a new screenshot?',
+      });
+      if (response === 1) takeScreenshot();
+    } else {
+      takeScreenshot();
+    }
   });
 
   if (!takeScreenshotShortcut) console.error('Take screeshot shortcut was not registred');
@@ -73,12 +84,15 @@ const createWindow = async () => {
       console.error(err);
     });
   });
+
+  // eslint-disable-next-line no-return-assign
+  ipcMain.on(APP_EVENTS.SCREENSHOT_LOADED, () => (screenshotLoaded = true));
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', createMainWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -93,7 +107,7 @@ app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
-    createWindow();
+    createMainWindow();
   }
 });
 
