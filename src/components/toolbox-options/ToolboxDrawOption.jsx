@@ -26,9 +26,7 @@ export default function ToolboxDrawOption({
 }
 
 ToolboxDrawOption.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
   canvas: PropTypes.object,
-  // eslint-disable-next-line react/forbid-prop-types
   screenshotImage: PropTypes.object,
   activeColor: PropTypes.string.isRequired,
   optionClickHandler: PropTypes.func.isRequired,

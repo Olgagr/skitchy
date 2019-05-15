@@ -23,9 +23,7 @@ export default function ToolboxSaveOption({ canvas, screenshotImage, optionClick
 }
 
 ToolboxSaveOption.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
   canvas: PropTypes.object,
-  // eslint-disable-next-line react/forbid-prop-types
   screenshotImage: PropTypes.object,
   optionClickHandler: PropTypes.func.isRequired,
 };

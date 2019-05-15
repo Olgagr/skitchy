@@ -101,9 +101,7 @@ export default class Toolbox extends Component {
 }
 
 Toolbox.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
   screenshotImage: PropTypes.object,
-  // eslint-disable-next-line react/forbid-prop-types
   canvas: PropTypes.object,
 };
 

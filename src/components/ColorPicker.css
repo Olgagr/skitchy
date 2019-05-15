@@ -1,3 +1,7 @@
+#ColorPicker {
+  text-align: center;
+}
+
 #ColorPicker .color-preview {
   width: 25px;
   height: 25px;
@@ -14,4 +18,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#ColorPicker .current-color-btn {
+  width: 37px;
+  height: 37px;
+  border-radius: 50%;
 }

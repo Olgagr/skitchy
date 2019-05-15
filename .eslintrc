@@ -14,7 +14,8 @@
     "no-useless-return": "off",
     "arrow-parens": "off",
     "no-param-reassign": "warn",
-    "max-len": "off"
+    "max-len": "off",
+    "react/forbid-prop-types": "off"
   },
   "globals": {
     "fabric": true
