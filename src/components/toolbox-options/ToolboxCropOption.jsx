@@ -1,6 +1,7 @@
+import { ipcRenderer } from 'electron';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TOOLBOX_OPTION } from '../../constants';
+import { TOOLBOX_OPTION, APP_EVENTS } from '../../constants';
 
 export default class ToolboxCropOption extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ export default class ToolboxCropOption extends Component {
       this.deleteCroppingArea();
       this.props.canvas.trigger('mouse:up');
     }
+    ipcRenderer.on(APP_EVENTS.DELETE_BUTTON_PRESSED, () => this.setState({ croppingRect: null }));
   }
 
   drawCroppingArea() {
