@@ -47,8 +47,11 @@ export default class ToolboxCropOption extends Component {
           width: pointer.x - origX,
           height: pointer.y - origY,
           angle: 0,
-          fill: 'rgba(255,0,0,0.5)',
+          fill: 'rgba(255,255,255,0)',
           transparentCorners: false,
+          hasBorders: true,
+          borderDashArray: [10, 4],
+          borderColor: '#000',
         });
         this.setState({ croppingRect: rect });
         this.props.canvas.add(this.state.croppingRect);
