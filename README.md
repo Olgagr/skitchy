@@ -1,6 +1,9 @@
-# Skitchy
+<div align="center">
+  <br />
+  <img src="./src/assets/icons/logo.png" alt="logo" width="100"/>
+</div>
 
-<img src="./src/assets/icons/logo.png" alt="logo" width="100" style="display: block; margin: 20 auto;"/>
+# Skitchy
 
 Sometimes you need to show part of your screen to somebody (for example to explain).
 
