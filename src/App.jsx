@@ -82,7 +82,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div className="content">
+      <div className="b-content">
         <aside>
           <nav>
             <ul>
@@ -91,7 +91,11 @@ export default class App extends React.Component {
           </nav>
         </aside>
         <main>
-          {/* <h2>To take a screenshot, use CTRL+ALT+L</h2> */}
+          {!this.state.screenshotImage && (
+            <h2 className="b-help-message">
+              Press CTRL+SHITF+L and draw the region on the screen to take a screenshot
+            </h2>
+          )}
           <canvas id="canvas" width="100%" height="100%" />
         </main>
       </div>

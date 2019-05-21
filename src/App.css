@@ -18,14 +18,17 @@
   margin: 0;
 }
 
-#App .content {
+#App .b-content {
   display: flex;
   align-items: center;
   height: 100%;
 }
 
-#App h2 {
-  margin: 0;
+#App .b-help-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -390px;
 }
 
 #App aside {
@@ -40,6 +43,7 @@
 }
 
 #App main {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
