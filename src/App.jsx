@@ -3,6 +3,7 @@ import React from 'react';
 import { fabric } from 'fabric';
 import { APP_EVENTS } from './constants';
 import Toolbox from './components/Toolbox';
+import debounce from './utils';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class App extends React.Component {
       canvas: null,
     };
     this.loadImagePreview = this.loadImagePreview.bind(this);
-    this.setCanvasSize = this.setCanvasSize.bind(this);
+    this.setCanvasSize = debounce(this.setCanvasSize.bind(this), 250);
     this.deleteActiveObjects = this.deleteActiveObjects.bind(this);
   }
 
@@ -32,7 +33,16 @@ export default class App extends React.Component {
     const mainEl = document.querySelector('#App main');
     const { width, height } = mainEl.getBoundingClientRect();
     this.state.canvas.setDimensions({ width, height });
-    this.state.canvas.renderAll();
+    this.state.canvas.requestRenderAll();
+    if (this.state.screenshotImage) {
+      this.scaleImageToCanvasDimentions(this.state.screenshotImage);
+      const canvasCenter = this.state.canvas.getCenter();
+      this.state.screenshotImage.set({
+        top: canvasCenter.top,
+        left: canvasCenter.left,
+      });
+    }
+    this.state.canvas.requestRenderAll();
   }
 
   deleteActiveObjects() {
@@ -52,11 +62,22 @@ export default class App extends React.Component {
         selectable: false,
         hoverCursor: 'auto',
       });
+      this.scaleImageToCanvasDimentions(i);
       this.setState({ screenshotImage: i });
       this.state.canvas.add(this.state.screenshotImage);
-      this.state.canvas.renderAll();
+      this.state.canvas.requestRenderAll();
       ipcRenderer.send(APP_EVENTS.SCREENSHOT_LOADED);
     });
+  }
+
+  scaleImageToCanvasDimentions(image) {
+    const canvas = this.state.canvas;
+    if (canvas.width > image.width && canvas.height > image.height) return;
+    if (canvas.width < canvas.height) {
+      image.scaleToWidth(canvas.width);
+    } else {
+      image.scaleToHeight(canvas.height);
+    }
   }
 
   render() {
