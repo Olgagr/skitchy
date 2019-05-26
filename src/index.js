@@ -1,4 +1,4 @@
-import { app, BrowserWindow, globalShortcut, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, globalShortcut, ipcMain, dialog, Menu, shell } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
 import childProcess from 'child_process';
@@ -78,7 +78,6 @@ const createMainWindow = async () => {
       defaultPath: app.getPath('pictures'),
       filters: [{ name: 'png files', extentions: ['png'] }],
     });
-
     if (!file) return;
 
     fs.writeFile(file, data, 'base64', (err) => {
@@ -114,3 +113,46 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+// Menu
+const menuTemplate = [
+  {
+    label: '&File',
+    submenu: [
+      {
+        label: 'Save as PNG',
+        accelerator: 'CommandOrControl+S',
+        click() {
+          mainWindow.webContents.send(APP_EVENTS.GET_CANVAS_DATA_TO_SAVE);
+        },
+      },
+      {
+        label: 'Quit',
+        role: 'quit',
+      },
+    ],
+  },
+  {
+    label: '&Window',
+    submenu: [
+      {
+        label: 'Minimaze',
+        role: 'minimize',
+      },
+    ],
+  },
+  {
+    label: '&Help',
+    submenu: [
+      {
+        label: 'Documentation',
+        click() {
+          shell.openExternal('https://github.com/Olgagr/skitchy');
+        },
+      },
+    ],
+  },
+];
+
+const applicationMenu = Menu.buildFromTemplate(menuTemplate);
+Menu.setApplicationMenu(applicationMenu);

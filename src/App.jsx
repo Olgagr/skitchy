@@ -3,7 +3,7 @@ import React from 'react';
 import { fabric } from 'fabric';
 import { APP_EVENTS } from './constants';
 import Toolbox from './components/Toolbox';
-import debounce from './utils';
+import { debounce, canvasToBase64 } from './utils';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -13,8 +13,9 @@ export default class App extends React.Component {
       canvas: null,
     };
     this.loadImagePreview = this.loadImagePreview.bind(this);
-    this.setCanvasSize = debounce(this.setCanvasSize.bind(this), 250);
+    this.setCanvasSize = debounce(this.setCanvasSize.bind(this), 100);
     this.deleteActiveObjects = this.deleteActiveObjects.bind(this);
+    this.getCanvasDataToSaveHandler = this.getCanvasDataToSaveHandler.bind(this);
   }
 
   componentDidMount() {
@@ -22,6 +23,7 @@ export default class App extends React.Component {
     this.setState({ canvas: new fabric.Canvas('canvas') }, () => this.setCanvasSize());
     ipcRenderer.on(APP_EVENTS.LOAD_SCREENSHOT_PREVIEW, this.loadImagePreview);
     ipcRenderer.on(APP_EVENTS.DELETE_BUTTON_PRESSED, this.deleteActiveObjects);
+    ipcRenderer.on(APP_EVENTS.GET_CANVAS_DATA_TO_SAVE, this.getCanvasDataToSaveHandler);
     window.addEventListener('resize', this.setCanvasSize, false);
   }
 
@@ -43,6 +45,11 @@ export default class App extends React.Component {
       });
     }
     this.state.canvas.requestRenderAll();
+  }
+
+  getCanvasDataToSaveHandler() {
+    if (!this.state.screenshotImage) return;
+    ipcRenderer.send(APP_EVENTS.SAVE_TO_FILE, canvasToBase64(this.state.canvas));
   }
 
   deleteActiveObjects() {
