@@ -11,7 +11,7 @@ export default function ToolboxTextOption({
   return (
     <button
       className="action-btn"
-      disabled={!screenshotImage}
+      // disabled={!screenshotImage}
       onClick={() => {
         optionClickHandler(TOOLBOX_OPTION.ADD_TEXT);
         const canvasCenter = canvas.getCenter();
