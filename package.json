@@ -18,25 +18,24 @@
     "forge": {
       "make_targets": {
         "linux": [
-          "deb",
-          "rpm"
+          "deb"
         ]
       },
       "electronPackagerConfig": {
         "packageManager": "npm"
       },
-      "electronWinstallerConfig": {
-        "name": "screen_shooter"
+      "electronWinstallerConfig": {},
+      "electronInstallerDebian": {
+        "name": "skitchy",
+        "icon": "src/assets/icons/logo_small.png",
+        "categories": [
+          "Utility"
+        ]
       },
-      "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
       "github_repository": {
-        "owner": "",
-        "name": ""
-      },
-      "windowsStoreConfig": {
-        "packageName": "",
-        "name": "screenshooter"
+        "owner": "Olga Grabek",
+        "name": "https://github.com/Olgagr/skitchy"
       }
     }
   },
