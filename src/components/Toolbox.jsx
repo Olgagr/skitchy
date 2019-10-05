@@ -27,7 +27,7 @@ export default class Toolbox extends Component {
       this.props.canvas.freeDrawingBrush.color = this.state.activeColor;
       this.props.canvas.getActiveObjects().forEach((object) => {
         if (object instanceof fabric.IText) object.set('fill', this.state.activeColor);
-        if (object instanceof fabric.Path) {
+        if (object instanceof fabric.Path || object instanceof fabric.Rect) {
           if (object.fill) {
             object.set('fill', this.state.activeColor);
           } else {
