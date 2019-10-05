@@ -133,6 +133,7 @@ export default class ToolboxCropOption extends Component {
           className="action-btn"
           disabled={!this.props.screenshotImage || this.state.croppingRect}
           onClick={this.drawCroppingArea}
+          title="Crop"
         >
           <svg
             className="action-icon"

@@ -21,6 +21,7 @@ export default class ColorPicker extends Component {
               submenuVisible: !submenuVisible,
             }))
           }
+          title="Select Color"
         />
         <ul className={!this.state.submenuVisible && 'm-hidden'}>
           {this.colors.map((color) => (
